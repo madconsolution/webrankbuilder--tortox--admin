@@ -146,22 +146,7 @@ const ProductListTable = ({ productData }) => {
           </div>
         )
       }),
-      columnHelper.accessor('category', {
-        header: 'Category',
-        cell: ({ row }) => (
-          <div className='flex items-center gap-3'>
-            <CustomAvatar skin='light' color={productCategoryObj[row.original.category].color} size={30}>
-              <i className={classnames(productCategoryObj[row.original.category].icon, 'text-lg')} />
-            </CustomAvatar>
-            <Typography color='text.primary'>{row.original.category}</Typography>
-          </div>
-        )
-      }),
-      columnHelper.accessor('stock', {
-        header: 'Stock',
-        cell: ({ row }) => <Switch defaultChecked={row.original.stock} />,
-        enableSorting: false
-      }),
+
       columnHelper.accessor('sku', {
         header: 'SKU',
         cell: ({ row }) => <Typography>{row.original.sku}</Typography>
