@@ -28,6 +28,8 @@ const eCommerceProductsList = async () => {
   // Vars
   const data = await getEcommerceData()
 
+  console.log('Product Data: ', data)
+
   return (
     <Grid container spacing={6}>
       <Grid size={{ xs: 12 }}>

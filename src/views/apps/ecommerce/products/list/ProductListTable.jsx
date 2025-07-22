@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 // MUI Imports
 import Card from '@mui/material/Card'
@@ -90,9 +90,9 @@ const productCategoryObj = {
 }
 
 const productStatusObj = {
-  Scheduled: { title: 'Scheduled', color: 'warning' },
-  Published: { title: 'Publish', color: 'success' },
-  Inactive: { title: 'Inactive', color: 'error' }
+  draft: { title: 'Draft', color: 'warning' },
+  active: { title: 'Active', color: 'success' },
+  inactive: { title: 'Inactive', color: 'error' }
 }
 
 // Column Definitions
@@ -107,6 +107,8 @@ const ProductListTable = ({ productData }) => {
 
   // Hooks
   const { lang: locale } = useParams()
+
+  const navigate = useRouter()
 
   const columns = useMemo(
     () => [
@@ -132,32 +134,33 @@ const ProductListTable = ({ productData }) => {
           />
         )
       },
-      columnHelper.accessor('productName', {
+      columnHelper.accessor('name', {
         header: 'Product',
         cell: ({ row }) => (
           <div className='flex items-center gap-3'>
-            <img src={row.original.image} width={38} height={38} className='rounded-md bg-actionHover' />
+            <img
+              src={`http://localhost:5001/${row.original.images[0]}`}
+              width={38}
+              height={38}
+              className='rounded-md bg-actionHover'
+            />
             <div className='flex flex-col'>
               <Typography className='font-medium' color='text.primary'>
-                {row.original.productName}
+                {row.original.name}
               </Typography>
-              <Typography variant='body2'>{row.original.productBrand}</Typography>
+              <Typography variant='body2'>{row.original?.productBrand}</Typography>
             </div>
           </div>
         )
       }),
 
-      columnHelper.accessor('sku', {
-        header: 'SKU',
-        cell: ({ row }) => <Typography>{row.original.sku}</Typography>
+      columnHelper.accessor('slug', {
+        header: 'SLUG',
+        cell: ({ row }) => <Typography>{row.original.slug}</Typography>
       }),
       columnHelper.accessor('price', {
         header: 'Price',
         cell: ({ row }) => <Typography>{row.original.price}</Typography>
-      }),
-      columnHelper.accessor('qty', {
-        header: 'QTY',
-        cell: ({ row }) => <Typography>{row.original.qty}</Typography>
       }),
       columnHelper.accessor('status', {
         header: 'Status',
@@ -174,20 +177,27 @@ const ProductListTable = ({ productData }) => {
         header: 'Actions',
         cell: ({ row }) => (
           <div className='flex items-center'>
-            <IconButton size='small'>
+            {/* <IconButton size='small'>
               <i className='ri-edit-box-line text-[22px] text-textSecondary' />
-            </IconButton>
+            </IconButton> */}
             <OptionMenu
               iconButtonProps={{ size: 'medium' }}
               iconClassName='text-textSecondary text-[22px]'
               options={[
-                { text: 'Download', icon: 'ri-download-line' },
+                // { text: 'Download', icon: 'ri-download-line' },
+                {
+                  text: 'Edit',
+                  icon: 'ri-edit-box-line',
+                  menuItemProps: {
+                    onClick: () => navigate(`/apps/ecommerce/products/add?edit=true?id=${row.original._id}`)
+                  }
+                },
                 {
                   text: 'Delete',
                   icon: 'ri-delete-bin-7-line',
                   menuItemProps: { onClick: () => setData(data?.filter(product => product.id !== row.original.id)) }
-                },
-                { text: 'Duplicate', icon: 'ri-stack-line' }
+                }
+                // { text: 'Duplicate', icon: 'ri-stack-line' }
               ]}
             />
           </div>

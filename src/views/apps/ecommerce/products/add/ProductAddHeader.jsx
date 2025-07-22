@@ -2,7 +2,7 @@
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
-const ProductAddHeader = () => {
+const ProductAddHeader = ({ handleSubmit }) => {
   return (
     <div className='flex flex-wrap sm:items-center justify-between max-sm:flex-col gap-6'>
       <div>
@@ -15,8 +15,10 @@ const ProductAddHeader = () => {
         <Button variant='outlined' color='secondary'>
           Discard
         </Button>
-        <Button variant='outlined'>Save Draft</Button>
-        <Button variant='contained'>Publish Product</Button>
+        {/* <Button variant='outlined'>Save Draft</Button> */}
+        <Button variant='contained' onClick={handleSubmit}>
+          Publish Product
+        </Button>
       </div>
     </div>
   )

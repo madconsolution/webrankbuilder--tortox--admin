@@ -17,7 +17,12 @@ import { db as pricingData } from '@/fake-db/pages/pricing'
 import { db as statisticsData } from '@/fake-db/pages/widgetExamples'
 
 export const getEcommerceData = async () => {
-  return eCommerceData
+  const response = await fetch('http://localhost:5001/api/products')
+  const data = await response.json()
+
+  console.log('Product Data: ', data)
+
+  return data
 }
 
 export const getAcademyData = async () => {

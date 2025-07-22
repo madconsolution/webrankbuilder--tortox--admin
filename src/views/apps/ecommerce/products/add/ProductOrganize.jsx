@@ -16,19 +16,18 @@ import TextField from '@mui/material/TextField'
 // Component Imports
 import CustomIconButton from '@core/components/mui/IconButton'
 
-const ProductOrganize = () => {
+const ProductOrganize = ({ status, setStatus }) => {
   // States
   const [vendor, setVendor] = useState('')
   const [category, setCategory] = useState('')
   const [collection, setCollection] = useState('')
-  const [status, setStatus] = useState('')
 
   return (
     <Card>
       <CardHeader title='Organize' />
       <CardContent>
         <form onSubmit={e => e.preventDefault()} className='flex flex-col gap-5'>
-          <FormControl fullWidth>
+          {/* <FormControl fullWidth>
             <InputLabel>Select Vendor</InputLabel>
             <Select label='Select Vendor' value={vendor} onChange={e => setVendor(e.target.value)}>
               <MenuItem value={`Men's Clothing`}>Men&apos;s Clothing</MenuItem>
@@ -58,16 +57,16 @@ const ProductOrganize = () => {
               <MenuItem value={`Women's Clothing`}>Women&apos;s Clothing</MenuItem>
               <MenuItem value={`Kid's Clothing`}>Kid&apos;s Clothing</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
           <FormControl fullWidth>
             <InputLabel>Select Status</InputLabel>
             <Select label='Select Status' value={status} onChange={e => setStatus(e.target.value)}>
-              <MenuItem value='Published'>Published</MenuItem>
-              <MenuItem value='Inactive'>Inactive</MenuItem>
-              <MenuItem value='Scheduled'>Scheduled</MenuItem>
+              <MenuItem value='active'>Active</MenuItem>
+              <MenuItem value='inactive'>Inactive</MenuItem>
+              <MenuItem value='draft'>Draft</MenuItem>
             </Select>
           </FormControl>
-          <TextField fullWidth label='Enter Tags' placeholder='Fashion, Trending, Summer' />
+          {/* <TextField fullWidth label='Enter Tags' placeholder='Fashion, Trending, Summer' /> */}
         </form>
       </CardContent>
     </Card>

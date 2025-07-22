@@ -38,9 +38,9 @@ const Dropzone = styled(AppReactDropzone)(({ theme }) => ({
   }
 }))
 
-const ProductImage = () => {
+const ProductImage = ({ files, setFiles }) => {
   // States
-  const [files, setFiles] = useState([])
+  // const [files, setFiles] = useState([])
 
   // Hooks
   const { getRootProps, getInputProps } = useDropzone({
@@ -96,7 +96,7 @@ const ProductImage = () => {
           title='Product Image'
           action={
             <Typography component={Link} color='primary.main' className='font-medium'>
-              Add media from URL
+              Add media
             </Typography>
           }
           sx={{ '& .MuiCardHeader-action': { alignSelf: 'center' } }}
@@ -122,7 +122,7 @@ const ProductImage = () => {
                 <Button color='error' variant='outlined' onClick={handleRemoveAllFiles}>
                   Remove All
                 </Button>
-                <Button variant='contained'>Upload Files</Button>
+                {/* <Button variant='contained'>Upload Files</Button> */}
               </div>
             </>
           ) : null}

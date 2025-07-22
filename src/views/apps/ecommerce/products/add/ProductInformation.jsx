@@ -110,7 +110,7 @@ const EditorToolbar = ({ editor }) => {
   )
 }
 
-const ProductInformation = () => {
+const ProductInformation = ({ name, setName, slug, setSlug, description, setDescription }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -123,11 +123,11 @@ const ProductInformation = () => {
       Underline
     ],
     immediatelyRender: false,
-    content: `
-      <p>
-        Keep your account secure with authentication step.
-      </p>
-    `
+    content: description,
+    onUpdate({ editor }) {
+      const html = editor.getHTML()
+      setDescription(html)
+    }
   })
 
   return (
@@ -136,21 +136,36 @@ const ProductInformation = () => {
       <CardContent>
         <Grid container spacing={5} className='mbe-5'>
           <Grid size={{ xs: 12 }}>
-            <TextField fullWidth label='Product Name' placeholder='iPhone 14' />
+            <TextField
+              fullWidth
+              label='Product Name'
+              placeholder='iPhone 14'
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField fullWidth label='SKU' placeholder='FXSK123U' />
+            <TextField
+              fullWidth
+              label='slug'
+              placeholder='macbook-pro-m1'
+              value={slug}
+              onChange={e => setSlug(e.target.value)}
+            />
           </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField fullWidth label='Barcode' placeholder='0123-4567' />
-          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>{/* <TextField fullWidth label='Barcode' placeholder='0123-4567' /> */}</Grid>
         </Grid>
         <Typography className='mbe-1'>Description (Optional)</Typography>
         <Card className='p-0 border shadow-none'>
           <CardContent className='p-0'>
             <EditorToolbar editor={editor} />
             <Divider className='mli-5' />
-            <EditorContent editor={editor} className='bs-[135px] overflow-y-auto flex ' />
+            <EditorContent
+              editor={editor}
+              className='bs-[135px] overflow-y-auto flex '
+              value={description}
+              onChange={setDescription}
+            />
           </CardContent>
         </Card>
       </CardContent>
