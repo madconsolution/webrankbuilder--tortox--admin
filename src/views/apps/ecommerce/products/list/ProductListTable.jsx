@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 
 // MUI Imports
 import Card from '@mui/material/Card'
@@ -109,6 +109,8 @@ const ProductListTable = ({ productData }) => {
   const { lang: locale } = useParams()
 
   const navigate = useRouter()
+  const pathname = usePathname()
+  const basePath = pathname.endsWith('/list') ? pathname.replace(/\/list$/, '') : pathname
 
   const columns = useMemo(
     () => [
@@ -189,13 +191,33 @@ const ProductListTable = ({ productData }) => {
                   text: 'Edit',
                   icon: 'ri-edit-box-line',
                   menuItemProps: {
-                    onClick: () => navigate(`/apps/ecommerce/products/add?edit=true?id=${row.original._id}`)
+                    onClick: () => navigate.push(`${basePath}/add?edit=true&id=${row.original._id}`)
                   }
                 },
                 {
                   text: 'Delete',
                   icon: 'ri-delete-bin-7-line',
-                  menuItemProps: { onClick: () => setData(data?.filter(product => product.id !== row.original.id)) }
+                  menuItemProps: {
+                    onClick: async () => {
+                      const confirmDelete = window.confirm(`Are you sure you want to delete "${row.original.name}"?`)
+                      if (!confirmDelete) return
+
+                      try {
+                        const res = await fetch(`http://localhost:5001/api/products/${row.original._id}`, {
+                          method: 'DELETE'
+                        })
+
+                        if (!res.ok) throw new Error('Failed to delete product')
+
+                        // Remove product from state
+                        setData(prev => prev.filter(product => product._id !== row.original._id))
+                        setFilteredData(prev => prev.filter(product => product._id !== row.original._id))
+                      } catch (err) {
+                        console.error('Delete error:', err)
+                        alert('Failed to delete product.')
+                      }
+                    }
+                  }
                 }
                 // { text: 'Duplicate', icon: 'ri-stack-line' }
               ]}
@@ -252,14 +274,14 @@ const ProductListTable = ({ productData }) => {
             className='max-sm:is-full'
           />
           <div className='flex items-center max-sm:flex-col gap-4 max-sm:is-full is-auto'>
-            <Button
+            {/* <Button
               color='secondary'
               variant='outlined'
               className='max-sm:is-full is-auto'
               startIcon={<i className='ri-upload-2-line' />}
             >
               Export
-            </Button>
+            </Button> */}
             <Button
               variant='contained'
               component={Link}

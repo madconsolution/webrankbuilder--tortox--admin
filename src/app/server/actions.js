@@ -20,7 +20,14 @@ export const getEcommerceData = async () => {
   const response = await fetch('http://localhost:5001/api/products')
   const data = await response.json()
 
-  console.log('Product Data: ', data)
+  return data
+}
+
+export const getInquiryData = async () => {
+  const response = await fetch('http://localhost:5001/api/inquiry')
+  const data = await response.json()
+
+  console.log('Inquiry Data: ', data)
 
   return data
 }

@@ -2,12 +2,12 @@
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
-const ProductAddHeader = ({ handleSubmit }) => {
+const ProductAddHeader = ({ handleSubmit, edit }) => {
   return (
     <div className='flex flex-wrap sm:items-center justify-between max-sm:flex-col gap-6'>
       <div>
         <Typography variant='h4' className='mbe-1'>
-          Add a new product
+          {edit ? `Edit ` : `Add a new`} Product
         </Typography>
         <Typography>Orders placed across your store</Typography>
       </div>
@@ -17,7 +17,7 @@ const ProductAddHeader = ({ handleSubmit }) => {
         </Button>
         {/* <Button variant='outlined'>Save Draft</Button> */}
         <Button variant='contained' onClick={handleSubmit}>
-          Publish Product
+          {edit ? `Edit` : `Publish`} Product
         </Button>
       </div>
     </div>

@@ -52,13 +52,13 @@ const TableFilters = ({ setData, productData }) => {
               labelId='status-select'
             >
               <MenuItem value=''>Select Status</MenuItem>
-              <MenuItem value='Scheduled'>Scheduled</MenuItem>
-              <MenuItem value='Published'>Publish</MenuItem>
-              <MenuItem value='Inactive'>Inactive</MenuItem>
+              <MenuItem value='draft'>Draft</MenuItem>
+              <MenuItem value='active'>Active</MenuItem>
+              <MenuItem value='inactive'>Inactive</MenuItem>
             </Select>
           </FormControl>
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
+        {/* <Grid size={{ xs: 12, sm: 4 }}>
           <FormControl fullWidth>
             <InputLabel id='category-select'>Category</InputLabel>
             <Select
@@ -95,7 +95,7 @@ const TableFilters = ({ setData, productData }) => {
               <MenuItem value='Out of Stock'>Out of Stock</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
+        </Grid> */}
       </Grid>
     </CardContent>
   )

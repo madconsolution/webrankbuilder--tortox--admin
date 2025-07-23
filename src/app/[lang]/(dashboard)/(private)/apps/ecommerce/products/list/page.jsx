@@ -32,9 +32,9 @@ const eCommerceProductsList = async () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid size={{ xs: 12 }}>
+      {/* <Grid size={{ xs: 12 }}>
         <ProductCard />
-      </Grid>
+      </Grid> */}
       <Grid size={{ xs: 12 }}>
         <ProductListTable productData={data?.products} />
       </Grid>

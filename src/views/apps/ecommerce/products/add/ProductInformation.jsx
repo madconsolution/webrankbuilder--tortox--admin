@@ -22,6 +22,7 @@ import CustomIconButton from '@core/components/mui/IconButton'
 
 // Style Imports
 import '@/libs/styles/tiptapEditor.css'
+import { useEffect } from 'react'
 
 const EditorToolbar = ({ editor }) => {
   if (!editor) {
@@ -129,6 +130,13 @@ const ProductInformation = ({ name, setName, slug, setSlug, description, setDesc
       setDescription(html)
     }
   })
+
+  // 🔥 Add this effect to sync updated description into the editor
+  useEffect(() => {
+    if (editor && description) {
+      editor.commands.setContent(description)
+    }
+  }, [editor, description])
 
   return (
     <Card>

@@ -73,8 +73,8 @@ const Login = ({ mode }) => {
   } = useForm({
     resolver: valibotResolver(schema),
     defaultValues: {
-      email: 'admin@materialize.com',
-      password: 'admin'
+      email: '',
+      password: ''
     }
   })
 
@@ -139,12 +139,12 @@ const Login = ({ mode }) => {
             <Typography variant='h4'>{`Welcome to ${themeConfig.templateName}!👋🏻`}</Typography>
             <Typography>Please sign-in to your account and start the adventure</Typography>
           </div>
-          <Alert icon={false} className='bg-[var(--mui-palette-primary-lightOpacity)]'>
+          {/* <Alert icon={false} className='bg-[var(--mui-palette-primary-lightOpacity)]'>
             <Typography variant='body2' color='primary.main'>
               Email: <span className='font-medium'>admin@materialize.com</span> / Pass:{' '}
               <span className='font-medium'>admin</span>
             </Typography>
-          </Alert>
+          </Alert> */}
 
           <form
             noValidate
@@ -211,7 +211,7 @@ const Login = ({ mode }) => {
               )}
             />
             <div className='flex justify-between items-center flex-wrap gap-x-3 gap-y-1'>
-              <FormControlLabel control={<Checkbox defaultChecked />} label='Remember me' />
+              {/* <FormControlLabel control={<Checkbox defaultChecked />} label='Remember me' />
               <Typography
                 className='text-end'
                 color='primary.main'
@@ -219,19 +219,19 @@ const Login = ({ mode }) => {
                 href={getLocalizedUrl('/forgot-password', locale)}
               >
                 Forgot password?
-              </Typography>
+              </Typography> */}
             </div>
             <Button fullWidth variant='contained' type='submit'>
               Log In
             </Button>
-            <div className='flex justify-center items-center flex-wrap gap-2'>
+            {/* <div className='flex justify-center items-center flex-wrap gap-2'>
               <Typography>New on our platform?</Typography>
               <Typography component={Link} href={getLocalizedUrl('/register', locale)} color='primary.main'>
                 Create an account
               </Typography>
-            </div>
+            </div> */}
           </form>
-          <Divider className='gap-3'>or</Divider>
+          {/* <Divider className='gap-3'>or</Divider>
           <Button
             color='secondary'
             className='self-center text-textPrimary'
@@ -240,7 +240,7 @@ const Login = ({ mode }) => {
             onClick={() => signIn('google')}
           >
             Sign in with Google
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

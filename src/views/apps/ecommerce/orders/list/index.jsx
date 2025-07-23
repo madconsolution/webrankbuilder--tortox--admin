@@ -7,14 +7,14 @@ import Grid from '@mui/material/Grid2'
 import OrderCard from './OrderCard'
 import OrderListTable from './OrderListTable'
 
-const OrderList = ({ orderData }) => {
+const OrderList = ({ inquiryData }) => {
   return (
     <Grid container spacing={6}>
-      <Grid size={{ xs: 12 }}>
+      {/* <Grid size={{ xs: 12 }}>
         <OrderCard />
-      </Grid>
+      </Grid> */}
       <Grid size={{ xs: 12 }}>
-        <OrderListTable orderData={orderData} />
+        <OrderListTable inquiryData={inquiryData} />
       </Grid>
     </Grid>
   )

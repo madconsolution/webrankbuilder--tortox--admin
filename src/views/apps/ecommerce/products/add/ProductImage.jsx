@@ -38,7 +38,7 @@ const Dropzone = styled(AppReactDropzone)(({ theme }) => ({
   }
 }))
 
-const ProductImage = ({ files, setFiles }) => {
+const ProductImage = ({ files, setFiles, existingImages, setExistingImages }) => {
   // States
   // const [files, setFiles] = useState([])
 
@@ -50,11 +50,18 @@ const ProductImage = ({ files, setFiles }) => {
   })
 
   const renderFilePreview = file => {
-    if (file.type.startsWith('image')) {
-      return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file)} />
-    } else {
-      return <i className='ri-file-text-line' />
+    // Handle old image (string path)
+    if (typeof file === 'string') {
+      const src = `http://localhost:5001/${file}`
+      return <img width={38} height={38} alt='preview' src={src} />
     }
+
+    // Handle newly uploaded image
+    if (file?.type?.startsWith('image')) {
+      return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file)} />
+    }
+
+    return <i className='ri-file-text-line' />
   }
 
   const handleRemoveFile = file => {
@@ -64,29 +71,57 @@ const ProductImage = ({ files, setFiles }) => {
     setFiles([...filtered])
   }
 
-  const fileList = files.map(file => (
-    <ListItem key={file.name} className='pis-4 plb-3'>
-      <div className='file-details'>
-        <div className='file-preview'>{renderFilePreview(file)}</div>
-        <div>
-          <Typography className='file-name font-medium' color='text.primary'>
-            {file.name}
-          </Typography>
-          <Typography className='file-size' variant='body2'>
-            {Math.round(file.size / 100) / 10 > 1000
-              ? `${(Math.round(file.size / 100) / 10000).toFixed(1)} mb`
-              : `${(Math.round(file.size / 100) / 10).toFixed(1)} kb`}
-          </Typography>
-        </div>
-      </div>
-      <IconButton onClick={() => handleRemoveFile(file)}>
-        <i className='ri-close-line text-xl' />
-      </IconButton>
-    </ListItem>
-  ))
+  const handleRemoveExistingFile = url => {
+    setExistingImages(prev => prev.filter(img => img !== url))
+  }
+
+  const fileList = (
+    <List>
+      {/* Existing Images */}
+      {existingImages.map((img, index) => (
+        <ListItem key={`old-${index}`} className='pis-4 plb-3'>
+          <div className='file-details'>
+            <div className='file-preview'>{renderFilePreview(img)}</div>
+            <div>
+              <Typography className='file-name font-medium'>{img.split('/').pop()}</Typography>
+              <Typography className='file-size' variant='body2'>
+                Saved Image
+              </Typography>
+            </div>
+          </div>
+          <IconButton onClick={() => handleRemoveExistingFile(img)}>
+            <i className='ri-close-line text-xl' />
+          </IconButton>
+        </ListItem>
+      ))}
+
+      {/* New Images */}
+      {files.map(file => (
+        <ListItem key={file.name} className='pis-4 plb-3'>
+          <div className='file-details'>
+            <div className='file-preview'>{renderFilePreview(file)}</div>
+            <div>
+              <Typography className='file-name font-medium' color='text.primary'>
+                {file.name}
+              </Typography>
+              <Typography className='file-size' variant='body2'>
+                {Math.round(file.size / 100) / 10 > 1000
+                  ? `${(Math.round(file.size / 100) / 10000).toFixed(1)} mb`
+                  : `${(Math.round(file.size / 100) / 10).toFixed(1)} kb`}
+              </Typography>
+            </div>
+          </div>
+          <IconButton onClick={() => handleRemoveFile(file)}>
+            <i className='ri-close-line text-xl' />
+          </IconButton>
+        </ListItem>
+      ))}
+    </List>
+  )
 
   const handleRemoveAllFiles = () => {
     setFiles([])
+    setExistingImages([])
   }
 
   return (
@@ -115,14 +150,13 @@ const ProductImage = ({ files, setFiles }) => {
               </Button>
             </div>
           </div>
-          {files.length ? (
+          {files.length > 0 || existingImages.length > 0 ? (
             <>
-              <List>{fileList}</List>
+              {fileList}
               <div className='buttons'>
                 <Button color='error' variant='outlined' onClick={handleRemoveAllFiles}>
                   Remove All
                 </Button>
-                {/* <Button variant='contained'>Upload Files</Button> */}
               </div>
             </>
           ) : null}

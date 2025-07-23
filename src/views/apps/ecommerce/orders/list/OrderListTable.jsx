@@ -90,10 +90,10 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
 // Column Definitions
 const columnHelper = createColumnHelper()
 
-const OrderListTable = ({ orderData }) => {
+const OrderListTable = ({ inquiryData }) => {
   // States
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[orderData])
+  const [data, setData] = useState(...[inquiryData])
   const [globalFilter, setGlobalFilter] = useState('')
 
   // Hooks
@@ -127,27 +127,35 @@ const OrderListTable = ({ orderData }) => {
           />
         )
       },
-      columnHelper.accessor('order', {
-        header: 'Order',
+      columnHelper.accessor('productName', {
+        header: 'Product Name',
         cell: ({ row }) => (
           <Typography
             component={Link}
-            href={getLocalizedUrl(`/apps/ecommerce/orders/details/${row.original.order}`, locale)}
+            href={getLocalizedUrl(`/apps/ecommerce/orders/details/${row.original.productName}`, locale)}
             color='primary.main'
-          >{`#${row.original.order}`}</Typography>
+          >{`${row.original.productName}`}</Typography>
         )
       }),
-      columnHelper.accessor('date', {
-        header: 'Date',
+      columnHelper.accessor('productPrice', {
+        header: 'Product Price',
         cell: ({ row }) => (
-          <Typography>{`${new Date(row.original.date).toDateString()}, ${row.original.time}`}</Typography>
+          <Typography
+            component={Link}
+            href={getLocalizedUrl(`/apps/ecommerce/orders/details/${row.original.productPrice}`, locale)}
+            color='primary.main'
+          >{`${row.original.productPrice}`}</Typography>
         )
+      }),
+      columnHelper.accessor('inquiryDate', {
+        header: 'Inquiry Date',
+        cell: ({ row }) => <Typography>{`${new Date(row.original.inquiryDate).toDateString()}`}</Typography>
       }),
       columnHelper.accessor('customer', {
         header: 'Customers',
         cell: ({ row }) => (
           <div className='flex items-center gap-3'>
-            {getAvatar({ avatar: row.original.avatar, customer: row.original.customer })}
+            {/* {getAvatar({ avatar: row.original.avatar, customer: row.original.customer })} */}
             <div className='flex flex-col'>
               <Typography
                 component={Link}
@@ -155,80 +163,23 @@ const OrderListTable = ({ orderData }) => {
                 color='text.primary'
                 className='font-medium hover:text-primary'
               >
-                {row.original.customer}
+                {row.original.name}
               </Typography>
               <Typography variant='body2'>{row.original.email}</Typography>
+              <Typography variant='body2'>{row.original.phone}</Typography>
             </div>
           </div>
         )
       }),
-      columnHelper.accessor('payment', {
-        header: 'Payment',
+      columnHelper.accessor('message', {
+        header: 'Message',
         cell: ({ row }) => (
-          <div className='flex items-center gap-1'>
-            <i
-              className={classnames('ri-circle-fill bs-2.5 is-2.5', paymentStatus[row.original.payment].colorClassName)}
-            />
-            <Typography color={`${paymentStatus[row.original.payment].color}.main`} className='font-medium'>
-              {paymentStatus[row.original.payment].text}
-            </Typography>
-          </div>
+          <Typography
+            component={Link}
+            href={getLocalizedUrl(`/apps/ecommerce/orders/details/${row.original.message}`, locale)}
+            color='primary.main'
+          >{`${row.original.message}`}</Typography>
         )
-      }),
-      columnHelper.accessor('status', {
-        header: 'Status',
-        cell: ({ row }) => (
-          <Chip
-            label={row.original.status}
-            color={statusChipColor[row.original.status].color}
-            variant='tonal'
-            size='small'
-          />
-        )
-      }),
-      columnHelper.accessor('method', {
-        header: 'Method',
-        cell: ({ row }) => (
-          <div className='flex items-center'>
-            <div className='flex justify-center items-center bg-[#F6F8FA] rounded-sm is-[29px] bs-[18px]'>
-              <img
-                src={row.original.method === 'mastercard' ? mastercard : paypal}
-                height={row.original.method === 'mastercard' ? 11 : 14}
-              />
-            </div>
-            <Typography>
-              {`...${row.original.method === 'mastercard' ? row.original.methodNumber : '@gmail.com'}`}
-            </Typography>
-          </div>
-        )
-      }),
-      columnHelper.accessor('action', {
-        header: 'Action',
-        cell: ({ row }) => (
-          <div className='flex items-center'>
-            <OptionMenu
-              iconButtonProps={{ size: 'medium' }}
-              iconClassName='text-[22px]'
-              options={[
-                {
-                  text: 'View',
-                  icon: 'ri-eye-line',
-                  href: getLocalizedUrl(`/apps/ecommerce/orders/details/${row.original.order}`, locale),
-                  linkProps: { className: 'flex items-center gap-2 is-full plb-2 pli-4' }
-                },
-                {
-                  text: 'Delete',
-                  icon: 'ri-delete-bin-7-line text-[22px]',
-                  menuItemProps: {
-                    onClick: () => setData(data?.filter(order => order.id !== row.original.id)),
-                    className: 'flex items-center gap-2 pli-4'
-                  }
-                }
-              ]}
-            />
-          </div>
-        ),
-        enableSorting: false
       })
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -287,9 +238,9 @@ const OrderListTable = ({ orderData }) => {
           placeholder='Search Order'
           className='sm:is-auto'
         />
-        <Button variant='outlined' color='secondary' startIcon={<i className='ri-upload-2-line' />}>
+        {/* <Button variant='outlined' color='secondary' startIcon={<i className='ri-upload-2-line' />}>
           Export
-        </Button>
+        </Button> */}
       </CardContent>
       <div className='overflow-x-auto'>
         <table className={tableStyles.table}>
